@@ -10,7 +10,8 @@ spring:
           auth: true
           starttls:
             enable: true
-  server:
-    port: 8080
-    servlet:
-      context-path: /api/notification-service
+
+server:
+  port: 8080
+  servlet:
+    context-path: /api/notification-service
