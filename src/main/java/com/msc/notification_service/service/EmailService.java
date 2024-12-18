@@ -1,7 +1,10 @@
 package com.msc.notification_service.service;
 
-import com.msc.notification_service.model.Notification;
+import com.msc.notification_service.model.Email;
 
-public interface NotificationService {
-    void sendNotification(Notification notification);
+import java.util.List;
+
+public interface EmailService {
+    void sendEmail(Email email);
+    List<Email> getAllEmails();
 }

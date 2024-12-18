@@ -1,14 +1,14 @@
 spring:
-#  data:
-#    mongodb:
-#      database: health_sync
-#      uri: mongodb+srv://foodie:foodie@cluster0.t4mq9fc.mongodb.net/health_sync
+  data:
+    mongodb:
+      database: health_tech
+      uri: mongodb+srv://kavindyarajapakshabcspgd:YLid69KODEIK7RaU@cluster0.ts8wj.mongodb.net/health_tech
 
   mail:
     host: smtp.gmail.com
     port: 587
-    username: your-email@gmail.com
-    password: your-email-password
+    username: 'kavindyarajapaksha.bcspgd@gmail.com'
+    password: '******'
     properties:
       mail:
         smtp:

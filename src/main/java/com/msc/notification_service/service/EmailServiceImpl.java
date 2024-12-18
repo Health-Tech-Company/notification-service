@@ -1,25 +1,39 @@
 package com.msc.notification_service.service;
 
-import com.msc.notification_service.model.Notification;
+import com.msc.notification_service.model.Email;
+import com.msc.notification_service.repository.EmailRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 @RequiredArgsConstructor
-public class NotificationServiceImpl implements NotificationService {
-
+public class EmailServiceImpl implements EmailService {
 
     private final JavaMailSender mailSender;
+    private final EmailRepository emailRepository;
 
     @Override
-    public void sendNotification(Notification notification) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setTo(notification.getPatientEmail());
-        mailMessage.setSubject(notification.getSubject());
-        mailMessage.setText(notification.getMessage());
+    public void sendEmail(Email email) {
+        try {
+            SimpleMailMessage mailMessage = new SimpleMailMessage();
+            mailMessage.setTo(email.getPatientEmail());
+            mailMessage.setSubject(email.getSubject());
+            mailMessage.setText(email.getMessage());
+            this.mailSender.send(mailMessage);
+            email.setStatus("SUCCESS");
+        } catch (Exception e) {
+            email.setStatus("FAILED");
+        }
+        this.emailRepository.save(email);
+    }
 
-        this.mailSender.send(mailMessage);
+    @Override
+    public List<Email> getAllEmails() {
+        // Fetch all saved emails from the database
+        return emailRepository.findAll();
     }
 }

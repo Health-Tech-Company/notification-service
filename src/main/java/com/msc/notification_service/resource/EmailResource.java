@@ -1,24 +1,29 @@
 package com.msc.notification_service.resource;
 
-import com.msc.notification_service.model.Notification;
-import com.msc.notification_service.service.NotificationService;
+import com.msc.notification_service.model.Email;
+import com.msc.notification_service.service.EmailService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
-@RequestMapping("/api/notifications")
-public class NotificationResource {
+@RequestMapping("/email")
+public class EmailResource {
 
-    private final NotificationService notificationService;
+    private final EmailService emailService;
 
-    @PostMapping
-    public ResponseEntity<String> sendNotification(@RequestBody Notification notification) {
-        notificationService.sendNotification(notification);
+    @PostMapping("/send")
+    public ResponseEntity<String> sendNotification(@RequestBody Email email) {
+        this.emailService.sendEmail(email);
         return ResponseEntity.ok("Notification sent successfully!");
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Email>> getAllEmails() {
+        List<Email> emails = this.emailService.getAllEmails();
+        return ResponseEntity.ok(emails);
     }
 }
