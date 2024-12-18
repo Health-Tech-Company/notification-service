@@ -1,15 +1,17 @@
 package com.msc.notification_service.service;
 
 import com.msc.notification_service.model.Notification;
+import lombok.RequiredArgsConstructor;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 @Service
+@RequiredArgsConstructor
 public class NotificationServiceImpl implements NotificationService {
 
 
-    private JavaMailSender mailSender;
+    private final JavaMailSender mailSender;
 
     @Override
     public void sendNotification(Notification notification) {
@@ -18,6 +20,6 @@ public class NotificationServiceImpl implements NotificationService {
         mailMessage.setSubject(notification.getSubject());
         mailMessage.setText(notification.getMessage());
 
-        mailSender.send(mailMessage);
+        this.mailSender.send(mailMessage);
     }
 }
