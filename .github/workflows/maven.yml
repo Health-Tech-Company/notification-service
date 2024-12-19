@@ -14,6 +14,9 @@ env:
   NAME_SPACE: health-tech
   IMAGE: notification-service
   TAG: prod
+  SMTP_USERNAME: ${{ secrets.SMTP_USERNAME }}
+  SMTP_PASSWORD: ${{ secrets.SMTP_PASSWORD }}
+  MONGO_CONNECTION_STRING: ${{secrets.MONGO_CONNECTION_STRING}}
 
 jobs:
   ci-cd-pipeline:
@@ -23,6 +26,18 @@ jobs:
     steps:
       - name: Checkout Code
         uses: actions/checkout@v3
+
+      - name: Inject Secrets into Environment
+        run: |
+          echo "Injecting secrets into environment variables..."
+          export MONGO_CONNECTION_STRING=${{ secrets.MONGO_CONNECTION_STRING }}
+          export SMTP_USERNAME=${{ secrets.SMTP_USERNAME }}
+          export SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}
+
+      - name: Verify Secrets in Application
+        run: |
+          echo "Verifying secret injection..."
+          cat src/main/resources/application.yml
 
       - name: Set up JDK 11
         uses: actions/setup-java@v3
@@ -66,3 +81,8 @@ jobs:
           kubectl apply -f deployment.yaml -n "$NAME_SPACE"
           kubectl rollout restart deployment "$DEPLOYMENT_NAME" -n "$NAME_SPACE"
           kubectl get services -o wide -n "$NAME_SPACE"
+
+      - name: Post-Deployment Integration Tests
+        run: |
+         echo "Running Service Health Check Test..."
+         curl --fail http://34.160.113.73/api/notification-service/health || exit 1
