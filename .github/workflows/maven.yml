@@ -30,13 +30,15 @@ jobs:
       - name: Inject Secrets into Environment
         run: |
           echo "Injecting secrets into environment variables..."
-          export MONGO_CONNECTION_STRING=${{ secrets.MONGO_CONNECTION_STRING }}
-          export SMTP_USERNAME=${{ secrets.SMTP_USERNAME }}
-          export SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}
+          echo "MONGO_CONNECTION_STRING=${{ secrets.MONGO_CONNECTION_STRING }}" >> $GITHUB_ENV
+          echo "SMTP_USERNAME=${{ secrets.SMTP_USERNAME }}" >> $GITHUB_ENV
+          echo "SMTP_PASSWORD=${{ secrets.SMTP_PASSWORD }}" >> $GITHUB_ENV
+
 
       - name: Verify Secrets in Application
         run: |
           echo "Verifying secret injection..."
+          echo "SMTP_USERNAME=$SMTP_USERNAME"
           cat src/main/resources/application.yml
 
       - name: Set up JDK 11
