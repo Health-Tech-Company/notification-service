@@ -2,13 +2,13 @@ spring:
   data:
     mongodb:
       database: health_tech
-      uri: ${{MONGO_CONNECTION_STRING}}
+      uri: mongodb+srv://kavindyarajapakshabcspgd:YLid69KODEIK7RaU@cluster0.ts8wj.mongodb.net/health_tech
 
   mail:
     host: smtp.gmail.com
     port: 587
-    username: ${SMTP_USERNAME}
-    password: ${SMTP_USERNAME}
+    username: 'kavindyarajapaksha.bcspgd@gmail.com'
+    password: '******'
     properties:
       mail:
         smtp:
